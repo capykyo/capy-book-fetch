@@ -23,6 +23,9 @@ export function createApp(): FastifyInstance {
         },
       } : undefined,
     },
+    // 配置 body 解析，确保正确处理 JSON
+    bodyLimit: 1048576, // 1MB
+    disableRequestLogging: false,
   });
 
   // 注册 JWT 插件

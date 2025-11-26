@@ -50,21 +50,37 @@ export default async function handler(
     url = `${url}${url.includes('?') ? '&' : '?'}${queryString}`;
   }
   
-  // 准备请求头
+  // 准备请求头（排除 Content-Length，让 Fastify 自动计算）
   const headers: Record<string, string> = {};
   Object.keys(req.headers).forEach((key) => {
+    const lowerKey = key.toLowerCase();
+    // 排除 Content-Length，让 Fastify 根据实际 payload 自动计算
+    if (lowerKey === 'content-length') {
+      return;
+    }
     const value = req.headers[key];
     if (value) {
       headers[key] = Array.isArray(value) ? value[0] : value;
     }
   });
   
+  // 处理请求体
+  let payload: string | undefined = undefined;
+  if (req.body) {
+    // 如果 body 已经是字符串，直接使用；如果是对象，转换为 JSON 字符串
+    if (typeof req.body === 'string') {
+      payload = req.body;
+    } else {
+      payload = JSON.stringify(req.body);
+    }
+  }
+  
   // 使用 Fastify 的 inject 方法处理请求
   const response = await app.inject({
     method: (req.method || 'GET') as any,
     url: url,
     headers: headers,
-    payload: req.body ? JSON.stringify(req.body) : undefined,
+    payload: payload,
   });
 
   // 设置响应状态码
