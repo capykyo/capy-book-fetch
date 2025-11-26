@@ -12,3 +12,4 @@ production.token
 # Vercel
 .vercel
 
+postman/
