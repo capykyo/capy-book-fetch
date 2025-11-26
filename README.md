@@ -266,9 +266,22 @@ pnpm build
 
 ## 部署
 
+### Vercel 部署（推荐）
+
+项目已配置支持 Vercel 自动部署，部署时会自动生成生产环境 token。
+
+详细说明请参考 [Vercel 部署指南](VERCEL_DEPLOYMENT.md)
+
+**快速步骤：**
+1. 在 Vercel 中导入项目
+2. 设置 `JWT_SECRET` 环境变量
+3. 部署后从构建日志中获取生成的 token
+
+### 其他部署方式
+
 详细部署说明请参考 [部署指南](DEPLOYMENT.md)
 
-### 快速部署
+**快速部署：**
 
 1. **生成生产环境 Token**:
    ```bash

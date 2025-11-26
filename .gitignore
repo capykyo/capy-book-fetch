@@ -9,4 +9,6 @@ pnpm-debug.log*
 # 生产环境 token（不应提交到仓库）
 *.token
 production.token
+# Vercel
+.vercel
 

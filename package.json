@@ -9,11 +9,12 @@
   },
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "build": "tsc && pnpm generate-token-on-build",
     "start": "node dist/index.js",
     "type-check": "tsc --noEmit",
     "generate-token": "tsx scripts/generate-token.ts",
-    "generate-production-token": "tsx scripts/generate-production-token.ts"
+    "generate-production-token": "tsx scripts/generate-production-token.ts",
+    "generate-token-on-build": "tsx scripts/generate-token-on-build.ts"
   },
   "keywords": [
     "fastify",
