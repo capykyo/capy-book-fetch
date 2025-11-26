@@ -67,7 +67,18 @@ pnpm start
 
 ### 认证
 
-所有 API 请求需要在请求头中包含 JWT token：
+**环境差异：**
+
+- **开发环境** (`NODE_ENV=development`): 
+  - JWT 认证已禁用，无需 token 即可访问所有 API
+  - `/api/auth/login` 端点可用，用于测试生成 token
+
+- **生产环境** (`NODE_ENV=production`):
+  - 所有受保护 API 需要在请求头中包含 JWT token
+  - `/api/auth/login` 端点不可用
+  - Token 通过部署脚本生成（有效期 7 天）
+
+**请求格式：**
 
 ```
 Authorization: Bearer <your-jwt-token>
@@ -75,20 +86,13 @@ Authorization: Bearer <your-jwt-token>
 
 **如何获取 JWT Token？**
 
-详细使用说明请参考 [JWT 使用指南](JWT_USAGE.md)
+- **开发环境**: 
+  1. 通过 API 生成：`POST /api/auth/login`
+  2. 使用脚本：`pnpm generate-token`
 
-**快速开始：**
-
-1. **通过 API 生成 token（推荐）：**
-   ```bash
-   curl -X POST http://localhost:3000/api/auth/login \
-     -H "Content-Type: application/json"
-   ```
-
-2. **使用脚本工具生成：**
-   ```bash
-   pnpm generate-token
-   ```
+- **生产环境**: 
+  - 使用部署脚本生成：`pnpm generate-production-token`
+  - 详细说明请参考 [JWT 使用指南](JWT_USAGE.md) 和 [部署指南](DEPLOYMENT.md)
 
 ### 认证相关 API
 
@@ -260,12 +264,37 @@ pnpm build
 3. Token 会自动保存，后续请求会自动使用
 4. 测试 **文章提取** API
 
+## 部署
+
+详细部署说明请参考 [部署指南](DEPLOYMENT.md)
+
+### 快速部署
+
+1. **生成生产环境 Token**:
+   ```bash
+   pnpm generate-production-token
+   ```
+
+2. **构建项目**:
+   ```bash
+   pnpm build
+   ```
+
+3. **启动服务**:
+   ```bash
+   NODE_ENV=production pnpm start
+   ```
+
 ## 注意事项
 
-1. **JWT 密钥安全**: 生产环境必须修改默认的 JWT 密钥
-2. **内容提取**: 当前提取逻辑为通用实现，针对特定网站需要定制化开发
-3. **请求超时**: 默认请求超时时间为 30 秒，可根据需要调整
-4. **错误处理**: 所有错误都会返回统一的 JSON 格式响应
+1. **环境变量**: 
+   - 开发环境：`NODE_ENV=development`（JWT 认证禁用）
+   - 生产环境：`NODE_ENV=production`（JWT 认证启用）
+2. **JWT 密钥安全**: 生产环境必须修改默认的 JWT 密钥
+3. **Token 管理**: 生产环境 token 通过脚本生成，有效期 7 天
+4. **内容提取**: 当前提取逻辑为通用实现，针对特定网站需要定制化开发
+5. **请求超时**: 默认请求超时时间为 30 秒，可根据需要调整
+6. **错误处理**: 所有错误都会返回统一的 JSON 格式响应
 
 ## 许可证
 
