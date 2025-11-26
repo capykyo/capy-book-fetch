@@ -41,27 +41,8 @@ const payload = {
 
 const token = generateToken(payload, '7d');
 
-// 使用 process.stdout.write 确保输出立即显示
+// 输出 token 信息（只使用 console.log，避免重复输出）
 const separator = '='.repeat(80);
-process.stdout.write('\n' + separator + '\n');
-process.stdout.write('✅ 生产环境 Token 生成成功!\n');
-process.stdout.write(separator + '\n');
-process.stdout.write('\n📋 Token 信息:\n');
-process.stdout.write(`有效期: 7 天\n`);
-process.stdout.write(`生成时间: ${new Date().toISOString()}\n`);
-process.stdout.write(`过期时间: ${new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()}\n`);
-process.stdout.write('\n🔑 Token:\n');
-process.stdout.write(token + '\n');
-process.stdout.write('\n📝 使用方式:\n');
-process.stdout.write('Authorization: Bearer ' + token + '\n');
-process.stdout.write('\n⚠️  重要提示:\n');
-process.stdout.write('1. 请复制并安全保存此 token\n');
-process.stdout.write('2. 将此 token 提供给 API 用户使用\n');
-process.stdout.write('3. Token 有效期为 7 天，过期后需要重新部署生成新 token\n');
-process.stdout.write('4. 不要将 token 提交到代码仓库\n');
-process.stdout.write('\n' + separator + '\n\n');
-
-// 同时使用 console.log 作为备用
 console.log('\n' + separator);
 console.log('✅ 生产环境 Token 生成成功!');
 console.log(separator);

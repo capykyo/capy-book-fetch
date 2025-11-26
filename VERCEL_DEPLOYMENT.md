@@ -26,6 +26,8 @@
 - `JWT_SECRET`: JWT 签名密钥（必须设置，用于生成和验证 token）
 - `NODE_ENV`: `production`（可选，默认已设置）
 
+**注意：** 项目使用 Node.js 20.x（在 `package.json` 的 `engines` 字段中指定）。如果 Vercel 项目设置中选择了其他 Node.js 版本（如 24.x），会被自动覆盖为 20.x，这是正常行为。
+
 **可选的环境变量：**
 
 - `PORT`: `3000`（Vercel 会自动设置）
