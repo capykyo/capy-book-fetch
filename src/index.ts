@@ -1,6 +1,7 @@
 import Fastify from 'fastify';
 import jwt from '@fastify/jwt';
 import { extractRoutes } from './routes/extract';
+import { authRoutes } from './routes/auth';
 import dotenv from 'dotenv';
 
 // 加载环境变量
@@ -26,6 +27,7 @@ fastify.register(jwt, {
 });
 
 // 注册路由
+fastify.register(authRoutes);
 fastify.register(extractRoutes);
 
 // 健康检查路由

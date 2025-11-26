@@ -7,7 +7,8 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "generate-token": "tsx scripts/generate-token.ts"
   },
   "keywords": [
     "fastify",
@@ -22,9 +23,11 @@
     "axios": "^1.6.0",
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.3.1",
-    "fastify": "^4.24.3"
+    "fastify": "^4.24.3",
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.10.0",
     "pino-pretty": "^10.2.3",
     "tsx": "^4.7.0",

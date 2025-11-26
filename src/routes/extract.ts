@@ -15,8 +15,6 @@ export async function extractRoutes(fastify: FastifyInstance) {
     {
       preHandler: [authenticate],
       schema: {
-        description: '从指定 URL 提取文章内容',
-        tags: ['extract'],
         body: {
           type: 'object',
           required: ['url'],

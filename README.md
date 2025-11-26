@@ -73,6 +73,70 @@ pnpm start
 Authorization: Bearer <your-jwt-token>
 ```
 
+**如何获取 JWT Token？**
+
+详细使用说明请参考 [JWT 使用指南](JWT_USAGE.md)
+
+**快速开始：**
+
+1. **通过 API 生成 token（推荐）：**
+   ```bash
+   curl -X POST http://localhost:3000/api/auth/login \
+     -H "Content-Type: application/json"
+   ```
+
+2. **使用脚本工具生成：**
+   ```bash
+   pnpm generate-token
+   ```
+
+### 认证相关 API
+
+**POST** `/api/auth/login`
+
+生成 JWT token（用于开发测试）。
+
+**请求体（可选）：**
+
+```json
+{
+  "userId": "user123",
+  "expiresIn": "7d"
+}
+```
+
+**响应：**
+
+```json
+{
+  "success": true,
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "expiresIn": "7d"
+}
+```
+
+**GET** `/api/auth/verify`
+
+验证当前 JWT token 是否有效。
+
+**请求头：**
+
+```
+Authorization: Bearer <your-jwt-token>
+```
+
+**响应：**
+
+```json
+{
+  "success": true,
+  "payload": {
+    "userId": "user123",
+    "iat": 1234567890
+  }
+}
+```
+
 ### 提取文章内容
 
 **POST** `/api/extract`
@@ -175,6 +239,26 @@ pnpm type-check
 ```bash
 pnpm build
 ```
+
+## Postman 测试
+
+项目包含完整的 Postman 测试集合，方便快速测试 API。
+
+### 导入 Postman 集合
+
+1. 打开 Postman
+2. 点击 **Import** 按钮
+3. 选择 `postman/BookFetch-JWT-API.postman_collection.json` 文件
+4. （可选）导入环境配置：`postman/BookFetch-Environment.postman_environment.json`
+
+详细使用说明请参考 [Postman 测试文档](postman/README.md)
+
+### 快速测试流程
+
+1. 启动服务器：`pnpm dev`
+2. 在 Postman 中运行 **认证相关** → **1. 生成 JWT Token**
+3. Token 会自动保存，后续请求会自动使用
+4. 测试 **文章提取** API
 
 ## 注意事项
 
