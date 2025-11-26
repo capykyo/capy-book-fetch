@@ -12,6 +12,16 @@ import { generateToken } from '../src/utils/jwt-helper';
 // 确保输出立即刷新
 process.stdout.setEncoding('utf8');
 
+// 检查是否在 Vercel 环境中
+// Vercel 会设置 VERCEL 环境变量
+const isVercel = process.env.VERCEL === '1' || process.env.VERCEL_ENV;
+
+// 如果不在 Vercel 环境中，跳过 token 生成（例如在 GitHub Actions 中）
+if (!isVercel) {
+  console.log('ℹ️  跳过 token 生成（非 Vercel 环境）');
+  process.exit(0);
+}
+
 // 从环境变量获取 JWT_SECRET
 const jwtSecret = process.env.JWT_SECRET;
 

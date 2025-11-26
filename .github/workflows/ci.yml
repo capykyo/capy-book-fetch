@@ -57,6 +57,10 @@ jobs:
       
       - name: Build
         run: pnpm build
+        env:
+          # 设置环境变量，让 postbuild 脚本知道这是 CI 环境，跳过 token 生成
+          CI: true
+          VERCEL: ''
       
       - name: Check build artifacts
         run: |
