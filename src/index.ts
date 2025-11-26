@@ -1,41 +1,9 @@
-import Fastify from 'fastify';
-import jwt from '@fastify/jwt';
-import { extractRoutes } from './routes/extract';
-import { authRoutes } from './routes/auth';
-import dotenv from 'dotenv';
-
-// 加载环境变量
-dotenv.config();
+import { createApp } from './app';
 
 // 创建 Fastify 实例
-const fastify = Fastify({
-  logger: {
-    level: process.env.LOG_LEVEL || 'info',
-    transport: process.env.NODE_ENV === 'development' ? {
-      target: 'pino-pretty',
-      options: {
-        translateTime: 'HH:MM:ss Z',
-        ignore: 'pid,hostname',
-      },
-    } : undefined,
-  },
-});
+const fastify = createApp();
 
-// 注册 JWT 插件
-fastify.register(jwt, {
-  secret: process.env.JWT_SECRET || 'your-secret-key-change-in-production',
-});
-
-// 注册路由
-fastify.register(authRoutes);
-fastify.register(extractRoutes);
-
-// 健康检查路由
-fastify.get('/health', async (request, reply) => {
-  return { status: 'ok', timestamp: new Date().toISOString() };
-});
-
-// 启动服务器
+// 启动服务器（仅用于本地开发）
 const start = async () => {
   try {
     const port = Number(process.env.PORT) || 3000;
@@ -61,5 +29,8 @@ process.on('SIGINT', async () => {
   }
 });
 
-start();
+// 仅在非 Vercel 环境中启动服务器
+if (!process.env.VERCEL) {
+  start();
+}
 

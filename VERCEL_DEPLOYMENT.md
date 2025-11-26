@@ -46,9 +46,11 @@ Vercel 会自动检测项目配置，但可以手动设置：
 
 - **Framework Preset**: Other
 - **Build Command**: `pnpm build`（会自动执行 token 生成）
-- **Output Directory**: `dist`
+- **Output Directory**: 留空（serverless functions 不需要输出目录）
 - **Install Command**: `pnpm install`
 - **Root Directory**: `./`
+
+**重要**: 项目使用 `api/index.ts` 作为 serverless function 入口，Vercel 会自动识别 `api/` 目录下的文件。
 
 ### 4. 部署
 
