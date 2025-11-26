@@ -84,8 +84,12 @@ export async function authRoutes(fastify: FastifyInstance) {
             type: 'object',
             properties: {
               success: { type: 'boolean' },
-              payload: { type: 'object' },
+              payload: { 
+                type: 'object',
+                additionalProperties: true,
+              },
             },
+            additionalProperties: true,
           },
           401: {
             type: 'object',
@@ -99,12 +103,20 @@ export async function authRoutes(fastify: FastifyInstance) {
     },
     async (request: FastifyRequest, reply: FastifyReply) => {
       // 如果到达这里，说明 token 验证成功
-      // @ts-ignore - Fastify JWT 插件会在 request 上添加 user 属性
+      // Fastify JWT 插件会在 request 上添加 user 属性
+      // @ts-ignore - Fastify JWT 插件类型定义
       const decoded = (request as any).user;
+
+      // 确保返回有效的 payload
+      // 如果 decoded 为空或 undefined，说明 token 中没有 payload 数据
+      const payload = decoded || { 
+        message: 'Token 验证成功，但 payload 为空',
+        note: '请检查 token 生成时的 payload 内容'
+      };
 
       return reply.status(200).send({
         success: true,
-        payload: decoded,
+        payload: payload,
       });
     }
   );

@@ -28,6 +28,8 @@ export function createApp(): FastifyInstance {
   // 注册 JWT 插件
   fastify.register(jwt, {
     secret: process.env.JWT_SECRET || 'your-secret-key-change-in-production',
+    // 确保解码后的 payload 正确设置到 request.user
+    decode: { complete: false },
   });
 
   // 注册路由
