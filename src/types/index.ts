@@ -10,6 +10,8 @@ export interface ExtractResult {
   author: string;
   prevLink: string | null;
   nextLink: string | null;
+  bookName?: string;
+  description?: string;
 }
 
 // API 成功响应类型

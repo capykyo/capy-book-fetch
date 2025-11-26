@@ -1,16 +1,22 @@
 import { ExtractResult } from '../types';
 import * as cheerio from 'cheerio';
+import { isQuanbenUrl, extractQuanbenContent } from './extractors/quanben-extractor';
 
 /**
  * 从 HTML 中提取文章内容
- * 注意：此功能需要根据目标网站的具体结构实现提取规则
- * 目前返回占位数据，后续可根据目标网站分析后实现具体规则
+ * 根据 URL 格式自动选择对应的提取器
  * 
  * @param html HTML 内容
  * @param url 原始 URL（用于解析相对链接）
  * @returns 提取的文章内容
  */
 export async function extractContent(html: string, url: string): Promise<ExtractResult> {
+  // 检查是否为 quanben.io 网站
+  if (isQuanbenUrl(url)) {
+    return extractQuanbenContent(html, url);
+  }
+
+  // 默认使用通用提取逻辑
   // TODO: 根据目标网站分析后实现具体的提取规则
   // 目前返回占位数据
   

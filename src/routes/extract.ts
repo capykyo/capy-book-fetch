@@ -39,9 +39,13 @@ export async function extractRoutes(fastify: FastifyInstance) {
                   author: { type: 'string' },
                   prevLink: { type: ['string', 'null'] },
                   nextLink: { type: ['string', 'null'] },
+                  bookName: { type: 'string' },
+                  description: { type: 'string' },
                 },
+                additionalProperties: true,
               },
             },
+            additionalProperties: true,
           },
           400: {
             type: 'object',
