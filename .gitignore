@@ -13,3 +13,4 @@ production.token
 .vercel
 
 postman/
+tempnpm-cache/
