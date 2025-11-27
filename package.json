@@ -4,7 +4,7 @@
   "description": "Fastify backend API service for extracting article content from HTML",
   "main": "dist/index.js",
   "engines": {
-    "node": ">=20.18.1 <23.0.0",
+    "node": ">=20.18.1",
     "pnpm": ">=8.0.0"
   },
   "scripts": {
@@ -26,11 +26,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@fastify/jwt": "^8.0.0",
+    "@fastify/jwt": "^9.0.0",
     "axios": "^1.6.0",
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.3.1",
-    "fastify": "^4.24.3",
+    "fastify": "^5.6.0",
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
