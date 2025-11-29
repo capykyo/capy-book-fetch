@@ -42,7 +42,37 @@ export default async function handler(
   await app.ready();
   
   // 构建请求 URL（包含查询参数）
+  // 处理 Vercel rewrites：vercel.json 将所有请求重写到 /api
+  // 尝试从多个来源获取原始路径
   let url = req.url || '/';
+  
+  // 尝试从 Vercel 特定的请求头获取原始路径
+  const originalPath = req.headers['x-vercel-original-path'] || 
+                       req.headers['x-invoke-path'] ||
+                       req.headers['x-forwarded-path'];
+  
+  if (originalPath && typeof originalPath === 'string') {
+    url = originalPath;
+  } else if (Array.isArray(originalPath) && originalPath.length > 0) {
+    url = originalPath[0];
+  }
+  
+  // 如果 URL 是 /api/api/xxx，说明路径被重复添加了，需要移除一个 /api
+  if (url.startsWith('/api/api/')) {
+    url = url.replace('/api/api/', '/api/');
+  }
+  
+  // 如果 URL 只是 /api 或 /api/，重定向到健康检查
+  if (url === '/api' || url === '/api/') {
+    url = '/health';
+  }
+  
+  // 确保 URL 以 / 开头
+  if (!url.startsWith('/')) {
+    url = '/' + url;
+  }
+  
+  // 添加查询参数
   if (req.query && Object.keys(req.query).length > 0) {
     const queryString = new URLSearchParams(
       req.query as Record<string, string>

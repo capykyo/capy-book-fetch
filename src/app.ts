@@ -1,4 +1,5 @@
 import Fastify, { FastifyInstance } from 'fastify';
+import cors from '@fastify/cors';
 import jwt from '@fastify/jwt';
 import { extractRoutes } from './routes/extract';
 import { authRoutes } from './routes/auth';
@@ -28,6 +29,18 @@ export function createApp(): FastifyInstance {
     disableRequestLogging: false,
   });
 
+  // 注册 CORS 插件（应在其他插件之前注册）
+  fastify.register(cors, {
+    origin: process.env.CORS_ORIGIN 
+      ? process.env.CORS_ORIGIN.split(',').map(origin => origin.trim())
+      : true, // 开发环境允许所有来源，生产环境应配置具体域名
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+    exposedHeaders: ['Content-Type'],
+    maxAge: 86400, // 24小时，减少预检请求
+  });
+
   // 注册 JWT 插件
   fastify.register(jwt, {
     secret: process.env.JWT_SECRET || 'your-secret-key-change-in-production',
@@ -42,6 +55,15 @@ export function createApp(): FastifyInstance {
   // 健康检查路由
   fastify.get('/health', async (request, reply) => {
     return { status: 'ok', timestamp: new Date().toISOString() };
+  });
+
+  // 404 处理 - 确保返回正确的 CORS 头
+  fastify.setNotFoundHandler(async (request, reply) => {
+    return reply.status(404).send({
+      success: false,
+      error: '路由不存在',
+      path: request.url,
+    });
   });
 
   return fastify;

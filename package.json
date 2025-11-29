@@ -26,6 +26,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cors": "^11.1.0",
     "@fastify/jwt": "^9.0.0",
     "axios": "^1.6.0",
     "cheerio": "^1.0.0-rc.12",
@@ -42,4 +43,3 @@
     "typescript": "^5.3.3"
   }
 }
-
